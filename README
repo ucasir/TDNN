@@ -1,0 +1,22 @@
+The python source used in the TDNN model in Jin et al. ACL 2018.
+
+Following python files are included:
+
+-embedding.py: 
+  Manage word embedding file in HDF5 format.
+
+-utils.py:
+  Functions used for data preparation. 
+
+-metrics.py: 
+  Evaluation metrics. 
+
+-essay_model.py:   
+  Model implementation.
+
+-train_part_essay_glove.py:   
+  Training of TDNN(SEM)
+
+-train_part_essay_parser.py:
+  Training of TDNN(SEM+Synt)
+ 
