@@ -82,20 +82,20 @@ class EssayModel:
                                            output_dim=self.embedding_dim,
                                            trainable=True,
                                            mask_zero=True)(input_ngrams_parser)
-        bi_lstm_parser_layer = Bidirectional(LSTM(output_dim=self.hidden_dim, return_sequences=False),
-                                             merge_mode='concat')(embedding_parser_layer)
+        bi_lstm_parser_layer = LSTM(output_dim=self.hidden_dim, return_sequences=False)(embedding_parser_layer)
+                                             
         ngrams_parser_model = Model(inputs=input_ngrams_parser, outputs=bi_lstm_parser_layer)
 
         input_sentences_parser = Input(shape=(10, 10), dtype='int32')
         sentence_parser_layer = TimeDistributed(ngrams_parser_model)(input_sentences_parser)
-        sentence_bilstm_parser_layer = Bidirectional(LSTM(output_dim=self.hidden_dim, return_sequences=False),
-                                                     merge_mode='concat')(sentence_parser_layer)
+        sentence_bilstm_parser_layer = LSTM(output_dim=self.hidden_dim, return_sequences=False)(sentence_parser_layer)
+                                                     
         sentence_parser_model = Model(inputs=input_sentences_parser, outputs=sentence_bilstm_parser_layer)
 
         input_essay_parser = Input(shape=(None, 10, 10), dtype='int32', name='essay')
         essay_parser_layer = TimeDistributed(sentence_parser_model)(input_essay_parser)
-        essay_bilstm_parser_layer = Bidirectional(LSTM(output_dim=self.hidden_dim, return_sequences=False),
-                                                  merge_mode='concat')(essay_parser_layer)
+        essay_bilstm_parser_layer = LSTM(output_dim=self.hidden_dim, return_sequences=False)(essay_parser_layer)
+                                                  
 
         merge_layer = Merge(mode='concat')([essay_bilstm_layer, essay_bilstm_parser_layer])
         bn_merge_layer = BatchNormalization()(merge_layer)
